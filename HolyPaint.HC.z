@@ -1,0 +1,70 @@
+DocClear;
+
+I64 arg1, arg2, ch, sc, msg_code, size, color, i, l, posx, posy, offset;
+CDC *dc=DCAlias;
+
+size = 1;
+color = BLACK;
+
+do {
+	if (ms.lb || ms.rb) {
+		for (i=0;i < size; i++) {
+			for (l=0;l < size; l++) {
+				offset = ToI64((size - 1) / 2);
+				posx = ms.pos.x + offset - i;
+				posy = ms.pos.y + offset - l;
+				if (ms.lb) {
+					dc->color = color;
+				} else {
+					dc->color = WHITE;
+				}
+				GrPlot(dc, posx, posy);
+			}
+		}
+	}
+	if (msg_code=ScanMsg(&arg1, &arg2, 1 << MSG_KEY_DOWN)) {
+		sc=arg2;
+		ch=arg1;
+		if (ch == 'i')
+			size += 2;
+		if (ch == 'o' && size > 1)
+			size -= 2;
+		if (ch == 'c')
+			DCFill;
+		if (sc&SCF_SHIFT) {
+			switch (ch) {
+				case 33:
+					color = BLACK;
+					break;
+				case 64:
+					color = 9;
+					break;
+				case 35:
+					color = 10;
+					break;
+				case 36:
+					color = 11;
+					break;
+				case 37:
+					color = 12;
+					break;
+				case 94:
+					color = 13;
+					break;
+				case 38:
+					color = 14;
+					break;
+				case 42:
+					color = 15;
+					break;
+			}
+		} else {
+			if (ch >= 49 && ch < 57)
+				color = ch - 48;
+		}
+	}
+	Sleep(10);
+} while (ch!=CH_ESC);
+
+DCDel(dc);
+DCFill;
