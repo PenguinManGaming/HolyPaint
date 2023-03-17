@@ -1,4 +1,5 @@
-# HolyPaint
+![## HolyPaint](https://i.imgur.com/IVlsl71.png)
+
 A drawing program for TempleOS
 
 ## Run it inside TempleOS
